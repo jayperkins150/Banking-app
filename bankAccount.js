@@ -1,5 +1,5 @@
 // Defining the bank account class
-class BankAccount () {
+class bankAccount {
     constructor(accountNumber, accountHolder, balance = 0) {
         this.accountNumber = accountNumber;
         this.accountHolder = accountHolder;
@@ -8,25 +8,30 @@ class BankAccount () {
     
     // Defining the deposit function
     deposit(amount) {
+        if (amount <= 0) {
+            return "Deposit amount must be greater than zero.";
+        }
         this.balance += amount;
-        console.log("you have deposited $${amount}. Your current balance is: $${this.balance}");
+        return `Successfully deposited $${amount}. New balance: $${this.balance}.`;
     }
 
     // Defining the withdraw function
     withdraw(amount) {
-        if (amount > this.balance) {
-            console.log("Insufficient funds");
-        } else {
-            this.balance -= amount;
-            console.log("$${amount} withdrawn, your current balance is: $${this.balance}");
+        if (amount <= 0) {
+            return "Withdrawal amount must be greater than zero.";
         }
+        if (amount > this.balance) {
+            return "Insufficient funds.";
+        }
+        this.balance -= amount;
+        return `You withdrew $${amount}. Remaining balance: $${this.balance}.`;
     }
 
     // Defining the check balance function
     checkBalance() {
-        console.log("The current balance for ${this.accountHolder} is: $${this.balance}");
+        return `Current balance for ${this.accountHolder}: $${this.balance}`;
     }
 }
 
-export default BankAccount;
+export default bankAccount;
 

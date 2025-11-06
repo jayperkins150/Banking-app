@@ -1,9 +1,9 @@
-import bankAccount from "./bankAccount.js";
+import BankAccount from "./BankAccount.js";
 
 // Create some accounts
 const accounts = [
-  new bankAccount(31031195, "Jay Perkins", 1000),
-  new bankAccount(18021994, "Ariza Sanchez", 500),
+  new BankAccount(31031195, "Jay Perkins", 1000),
+  new BankAccount(18021994, "Ariza Sanchez", 500),
 ];
 
 let currentAccount = null;
@@ -16,7 +16,7 @@ function login() {
 
   if (account) {
     currentAccount = account;
-    message.textContent = `Welcome, ${account.accountHolder}!`;
+    message.textContent = `Welcome, ${account.accountHolder}! Balance: $${account.balance}`;
     document.querySelector(".login-section").style.display = "none";
     document.querySelector(".bank-section").style.display = "block";
   } else {
@@ -26,20 +26,25 @@ function login() {
 
 // Deposit function
 function deposit() {
+  if (!currentAccount) return updateMessage("Please log in first.");
   const amount = parseFloat(document.getElementById("amount").value);
-  const result = currentAccount.deposit(amount);
-  updateMessage(result);
+  if (isNaN(amount) || amount <= 0) return updateMessage("Enter a valid amount.");
+  updateMessage(currentAccount.deposit(amount));
+  document.getElementById("amount").value = "";
 }
 
 // Withdraw function
 function withdraw() {
+  if (!currentAccount) return updateMessage("Please log in first.");
   const amount = parseFloat(document.getElementById("amount").value);
-  const result = currentAccount.withdraw(amount);
-  updateMessage(result);
+  if (isNaN(amount) || amount <= 0) return updateMessage("Enter a valid amount.");
+  updateMessage(currentAccount.withdraw(amount));
+  document.getElementById("amount").value = "";
 }
 
 // Check balance function
 function checkBalance() {
+  if (!currentAccount) return updateMessage("Please log in first.");
   updateMessage(currentAccount.checkBalance());
 }
 
@@ -48,7 +53,7 @@ function updateMessage(text) {
   document.getElementById("message").textContent = text;
 }
 
-// Attach event listeners
+// Event listeners
 document.getElementById("loginBtn").addEventListener("click", login);
 document.getElementById("depositBtn").addEventListener("click", deposit);
 document.getElementById("withdrawBtn").addEventListener("click", withdraw);
